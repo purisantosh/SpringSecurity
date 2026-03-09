@@ -28,10 +28,12 @@ public class UserController {
 
     @PostMapping("/login")
     public String login(@RequestBody User user){
-        User u = userRepository.findByUserName(user.getUserName());
-        if (!Objects.isNull(u))
-            return "success";
-        return "failure";
+
+        return userService.verify(user);
+//        User u = userRepository.findByUserName(user.getUserName());
+//        if (!Objects.isNull(u))
+//            return "success";
+//        return "failure";
 
     }
 }
