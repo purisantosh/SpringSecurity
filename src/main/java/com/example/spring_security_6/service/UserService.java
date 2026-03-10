@@ -8,8 +8,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
-
 @Service
 public class UserService {
 
@@ -19,10 +17,13 @@ public class UserService {
 
     private final AuthenticationManager authenticationManager;
 
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, AuthenticationManager authenticationManager) {
+    private final JwtService jwtService;
+
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, AuthenticationManager authenticationManager, JwtService jwtService) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
     }
 
     public User register(User user) {
@@ -39,7 +40,7 @@ public class UserService {
         ));
 //        User u = userRepository.findByUserName(user.getUserName());
         if (authenticate.isAuthenticated())
-            return "6646365452651653225151561561851658";
+            return jwtService.generateToken(user);
         return "failure";
     }
 }
